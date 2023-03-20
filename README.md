@@ -32,6 +32,27 @@
 1. DeepMIM: Deep Supervision for Masked Image Modeling
 2. On data scaling in masked image modeling
 
+
+**实验准备**:
+1. 下载预训练权重 [MAE](https://dl.fbaipublicfiles.com/mae/pretrain/mae_pretrain_vit_base.pth) 至 './pretrained' 文件夹下
+
+**执行代码**:
+```shell
+CUDA_VISIBLE_DEVICES=0 OMP_NUM_THREADS=1 python -m torch.distributed.launch --nproc_per_node=1 --master_port 12345 pretrain.py \
+    --num_workers 16 \
+    --accum_iter 2 \
+    --batch_size 64 \
+    --model mrm \
+    --norm_pix_loss \
+    --mask_ratio 0.75 \
+    --epochs 200 \
+    --warmup_epochs 40 \
+    --blr 3e-4 --weight_decay 0.05 \
+    --resume ./pretrained/mae_pretrain_vit_base.pth \
+    --data_path /dataset/mimic_cxr/ \
+    --output_dir ./work_dir/ \
+```
+
 **实验记录**:
 <table style="text-align: center">
     <tr></tr>
